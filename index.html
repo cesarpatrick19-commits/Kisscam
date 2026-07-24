@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Kiss Cam Boda</title>
   <style>
     * {
@@ -25,97 +25,125 @@
       justify-content: center;
       align-items: center;
     }
-    /* Video de fondo */
+    /* Transmisión de video */
     video {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    /* Capa del Marco / Overlay */
+    /* Marco superpuesto */
     .overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none; /* Deja pasar los clics al video/pantalla */
-      border: 15px solid rgba(255, 255, 255, 0.8);
-      box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+      pointer-events: none;
+      border: 6px solid rgba(255, 255, 255, 0.7);
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.4);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 40px 20px;
+      padding: 20px 10px;
     }
-    /* Header del Marco */
+    /* Banner superior sutil */
     .header {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 12px 35px;
-      border-radius: 50px;
-      border: 3px solid #ff4d6d;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      text-align: center;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 6px 20px;
+      border-radius: 30px;
+      border: 2px solid #ff4d6d;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(4px);
     }
     .header h1 {
       color: #c9184a;
-      font-size: 2.2rem;
-      letter-spacing: 2px;
+      font-size: 1.3rem;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       font-weight: 800;
     }
-    /* Corazón animado en el pie */
+    /* Banner inferior sutil */
     .footer {
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.5);
       color: #fff;
-      padding: 10px 25px;
-      border-radius: 30px;
-      font-size: 1.2rem;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.95rem;
       display: flex;
       align-items: center;
-      gap: 10px;
-      backdrop-filter: blur(5px);
+      gap: 6px;
+      backdrop-filter: blur(4px);
+      margin-bottom: 5px;
     }
     .heart {
       color: #ff4d6d;
-      font-size: 1.8rem;
-      animation: pulse 1s infinite alternate;
+      font-size: 1.2rem;
+      animation: pulse 0.9s infinite alternate;
     }
     @keyframes pulse {
       from { transform: scale(1); }
       to { transform: scale(1.3); }
     }
-    /* Botones Flotantes de Control */
+    /* Botones de control compactos (Solo íconos) */
     .controls {
       position: absolute;
-      bottom: 20px;
-      right: 20px;
+      bottom: 12px;
+      right: 12px;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       z-index: 10;
     }
-    .btn {
-      background: rgba(0, 0, 0, 0.5);
+    .btn-icon {
+      background: rgba(0, 0, 0, 0.6);
       color: white;
       border: 1px solid rgba(255, 255, 255, 0.4);
-      padding: 10px 15px;
-      border-radius: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       backdrop-filter: blur(4px);
-      transition: background 0.3s;
+      transition: background 0.2s, transform 0.1s;
     }
-    .btn:hover {
-      background: rgba(255, 255, 255, 0.2);
+    .btn-icon:active {
+      transform: scale(0.9);
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Ajustes específicos para pantalla apaisada / horizontal */
+    @media (orientation: landscape) {
+      .overlay {
+        padding: 12px 10px;
+        border-width: 8px;
+      }
+      .header h1 {
+        font-size: 1.1rem;
+      }
+      .footer {
+        font-size: 0.85rem;
+        padding: 4px 12px;
+      }
+      .controls {
+        bottom: 10px;
+        right: 10px;
+      }
+      .btn-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
 
   <div class="container" id="app">
-    <!-- Video de la cámara -->
     <video id="camera" autoplay playsinline muted></video>
 
-    <!-- Superposición del Marco Kiss Cam -->
     <div class="overlay">
       <div class="header">
         <h1>💋 KISS CAM 💋</h1>
@@ -126,10 +154,10 @@
       </div>
     </div>
 
-    <!-- Botones de Control -->
+    <!-- Botones compactos con íconos -->
     <div class="controls">
-      <button class="btn" id="switch-cam">🔄 Cambiar Cámara</button>
-      <button class="btn" id="fullscreen">⛶ Pantalla Completa</button>
+      <button class="btn-icon" id="switch-cam" title="Cambiar Cámara">🔄</button>
+      <button class="btn-icon" id="fullscreen" title="Pantalla Completa">⛶</button>
     </div>
   </div>
 
@@ -138,7 +166,18 @@
     const switchBtn = document.getElementById('switch-cam');
     const fullscreenBtn = document.getElementById('fullscreen');
     let currentStream = null;
-    let facingMode = "environment"; // Inicia con cámara trasera
+    let facingMode = "environment";
+
+    // Prevenir el apagado/bloqueo de pantalla (WakeLock API)
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          await navigator.wakeLock.request('screen');
+        }
+      } catch (err) {
+        console.log("WakeLock error:", err.message);
+      }
+    }
 
     async function startCamera() {
       if (currentStream) {
@@ -151,18 +190,17 @@
         });
         currentStream = stream;
         video.srcObject = stream;
+        requestWakeLock();
       } catch (err) {
         alert("Error al acceder a la cámara: " + err.message);
       }
     }
 
-    // Cambiar entre cámara frontal y trasera
     switchBtn.addEventListener('click', () => {
       facingMode = facingMode === "user" ? "environment" : "user";
       startCamera();
     });
 
-    // Modo Pantalla Completa
     fullscreenBtn.addEventListener('click', () => {
       const app = document.getElementById('app');
       if (!document.fullscreenElement) {
@@ -172,7 +210,6 @@
       }
     });
 
-    // Iniciar cámara al cargar
     startCamera();
   </script>
 </body>
